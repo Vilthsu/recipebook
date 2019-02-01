@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<style>
+    .recipe-item>span.recipe-desc {
+        display: block;
+    }
+    .recipe-item span.recipe-cooking-time {
+        font-size: 0.75em;
+        padding: .4em .7em
+    }
+    .recipe-item span.recipe-cooking-time .feathericons-font-size {
+        margin-top: -2px;
+    }
+</style>
+<h1>Kaikki reseptit</h1>
+{% if recipes == [] %}
+<p>Reseptejä ei löytynyt. <a href="/recipes/new">Lisää resepti</a></p>
+{% else %}
+<ul class="list-group list-group-flush">
+    {% for recipe in recipes %}
+    <li class="list-group-item recipe-item">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ recipe.nimi }}</h5>
+            <div class="recipe-cooking-time-box">
+                <span class="recipe-cooking-time badge badge-pill badge-secondary">
+                    <i data-feather="clock" class="feathericons-font-size feathericons-w-3"></i>
+                    {% if recipe.valmistusaika.tunti > 0 %}
+                    {{ recipe.valmistusaika.tunti }} h
+                    {% endif %}
+                    {% if recipe.valmistusaika.minuutti > 0 %}
+                    {{ recipe.valmistusaika.minuutti }} min
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <span class="recipe-desc">{{ recipe.kuvaus }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

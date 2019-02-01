@@ -103,5 +103,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# Ignore application
-/application
+# Ignore src
+/src
+
+# Ignore local sqlite
+/application/local.db
