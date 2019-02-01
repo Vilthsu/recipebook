@@ -10,8 +10,11 @@ class Resepti(db.Model):
     # Vierasavaimet
     valmistusaika = db.relationship('Valmistusaika', foreign_keys=valmistusaika_id)
 
-    def __init__(self, name):
+    def __init__(self, name, valmistusaika_id, valmistusohje, kuvaus):
         self.name = name
+        self.valmistusaika_id = valmistusaika_id
+        self.valmistusohje = valmistusohje
+        self.kuvaus = kuvaus
         
 class Valmistusaika(db.Model):
     id = db.Column(db.Integer, primary_key=True)
