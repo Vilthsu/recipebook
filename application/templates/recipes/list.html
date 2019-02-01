@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<style>
+    .recipe-item>span {
+        display: block;
+    }
+</style>
+<h1>Reseptit</h1>
+{% if recipes == [] %}
+<p>Reseptejä ei löytynyt. <a href="/recipes/new">Lisää resepti</a></p>
+{% else %}
+<ul class="list-group list-group-flush">
+    {% for recipe in recipes %}
+    <li class="list-group-item recipe-item">
+        <span class="recipe-name">{{ recipe.nimi }}</span>
+        <span class="recipe-desc">{{ recipe.kuvaus }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
