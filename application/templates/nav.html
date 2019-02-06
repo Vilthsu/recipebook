@@ -15,5 +15,16 @@
             </li>
         </ul>
     </div>
+    {% if current_user.is_authenticated %}
+    <div class="dropdown">
+        <a href="#" class="nav-link nav-link-light dropdown-toggle" id="navUserMenu" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">{{ current_user.get_fullname() }}</a>
+        <div class="dropdown-menu" aria-labelledby="navUserMenu">
+            <button class="dropdown-item" type="button">Omat tiedot</button>
+            <button class="dropdown-item" type="button">Kirjaudu ulos</button>
+        </div>
+    </div>
+    {% else %}
     <a href="{{ url_for('login') }}" class="btn btn-outline-light my-2 my-sm-0">Kirjaudu sisään</a>
+    {% endif %}
 </nav>

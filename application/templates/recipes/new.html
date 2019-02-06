@@ -8,7 +8,7 @@
 </p>
 {% if error %}
 <div class="alert alert-danger" id="main-error-alert" role="alert">
-{{ error }}
+    <i data-feather="alert-circle" class="feathericons-font-size feathericons-w-2 alert-icon"></i> {{ error }}
 </div>
 {% endif %}
 <form method="POST" action="{{ url_for('recipes_create') }}" role="form">

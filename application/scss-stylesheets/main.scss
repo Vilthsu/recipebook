@@ -1,3 +1,6 @@
+$rotation-step: 45;
+$rotation-max: 360;
+
 .feathericons-font-size {
     height: 1em;
     width: 1em;
@@ -9,5 +12,50 @@
 @for $i from 1 through 4 {
     .feathericons-w-#{$i} {
         stroke-width: #{$i};
+    }
+}
+
+@for $deg from $rotation-step through ceil($rotation-max/$rotation-step) {
+    .feathericons-r-#{$deg} {
+        -webkit-transform: rotate(#{$deg}deg);
+                transform: rotate(#{$deg}deg);
+    }
+}
+
+.feathericons-flip-h {
+    -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+}
+
+.feathericons-flip-v {
+    -webkit-transform: scaleY(-1);
+            transform: scaleY(-1);
+}
+
+.alert > .alert-icon {
+    width: 1.5em;
+    height: 1.5em;
+    line-height: inherit;
+    margin-right: 0.5em;
+    margin-top: -0.175em;
+}
+
+.navbar-dark {
+    .nav-link {
+        &.nav-link-with-no-link {
+            color: rgba(255,255,255,.5);
+
+            &:hover {
+                color: rgba(255,255,255,.75);
+            }
+        }
+
+        &.nav-link-light {
+            color: rgba(255,255,255,.75);
+            
+            &:hover {
+                color: #FFF;
+            }
+        }
     }
 }
