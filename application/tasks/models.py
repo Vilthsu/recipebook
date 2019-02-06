@@ -6,7 +6,7 @@ class Resepti(db.Model):
     valmistusaika_id = db.Column(db.Integer, db.ForeignKey('valmistusaika.id'))
     valmistusohje = db.Column(db.String(), nullable=False)
     kuvaus = db.Column(db.String(255), nullable=False)
-    
+
     # Vierasavaimet
     valmistusaika = db.relationship('Valmistusaika', foreign_keys=valmistusaika_id)
 
@@ -15,7 +15,7 @@ class Resepti(db.Model):
         self.valmistusaika_id = valmistusaika_id
         self.valmistusohje = valmistusohje
         self.kuvaus = kuvaus
-        
+
 class Valmistusaika(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tunti = db.Column(db.Integer, nullable=False)
