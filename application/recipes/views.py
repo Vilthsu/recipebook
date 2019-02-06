@@ -2,6 +2,7 @@ from application import app, db
 from flask import redirect, render_template, request, url_for
 from application.recipes.models import Resepti, Valmistusaika
 from application.recipes.forms import RecipeForm
+from flask_login import login_required
 
 # Kaikki reseptit
 @app.route("/recipes")
@@ -11,10 +12,12 @@ def recipes_list():
 
 # Uuden reseptin lisäys
 @app.route("/recipes/new", methods=["GET"])
+@login_required
 def recipes_new():
     return render_template("recipes/new.html", form = RecipeForm(prefix="recipe-"))
 
 @app.route("/recipes/new", methods=["POST"])
+@login_required
 def recipes_create():
     # Lyhyempi tapa etsiä kenttiä lähetetystä datasta
     data = request.form
