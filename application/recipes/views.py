@@ -13,9 +13,9 @@ def recipes_list():
 # Uuden reseptin lisäys
 @app.route("/recipes/new", methods=["GET", "POST"])
 @login_required
-def recipes_create():
+def recipes_new():
     prefix = "recipe-"
-    
+
     if request.method == "GET":
         return render_template("recipes/new.html", form = RecipeForm(prefix=prefix))
 

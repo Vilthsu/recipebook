@@ -11,7 +11,7 @@
     <i data-feather="alert-circle" class="feathericons-font-size feathericons-w-2 alert-icon"></i> {{ error }}
 </div>
 {% endif %}
-<form method="POST" action="{{ url_for('recipes_create') }}" role="form">
+<form method="POST" action="{{ url_for('recipes_new') }}" role="form">
     <div class="form-group">
         {{ form.name.label }} <span class="required-mark">*</span>
         {{ form.name(class_="form-control") }}
