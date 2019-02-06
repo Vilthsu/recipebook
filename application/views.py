@@ -1,6 +1,7 @@
 from application import app, db
 from flask import redirect, render_template, request, url_for
 from application.tasks.models import Resepti, Valmistusaika
+from application.tasks.forms import RecipeForm
 
 # Index-sivu
 @app.route("/")
@@ -16,7 +17,7 @@ def recipes_list():
 # Uuden reseptin lisäys
 @app.route("/recipes/new")
 def recipes_new():
-    return render_template("recipes/new.html")
+    return render_template("recipes/new.html", form = RecipeForm(prefix="recipe-"))
 
 @app.route("/recipes/", methods=["POST"])
 def recipes_create():
