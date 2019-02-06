@@ -1,6 +1,6 @@
 from application import app, bcrypt, db
 from flask import redirect, render_template, request, url_for
-from flask_login import login_user
+from flask_login import login_user, logout_user
 
 from application.auth.models import Kayttaja
 from application.auth.forms import LoginForm, RegistrationForm
@@ -109,4 +109,7 @@ def registratation():
     # Uudelleenohjataan käyttäjä kirjautumissivulle 
     return redirect(url_for("login") + "?from=registration&registration=ok")
 
-    
+@app.route("/auth/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("index") + "?logout=ok")

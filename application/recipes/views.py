@@ -11,25 +11,25 @@ def recipes_list():
     return render_template("recipes/list.html", recipes = Resepti.query.all())
 
 # Uuden reseptin lisäys
-@app.route("/recipes/new", methods=["GET"])
-@login_required
-def recipes_new():
-    return render_template("recipes/new.html", form = RecipeForm(prefix="recipe-"))
-
-@app.route("/recipes/new", methods=["POST"])
+@app.route("/recipes/new", methods=["GET", "POST"])
 @login_required
 def recipes_create():
+    prefix = "recipe-"
+    
+    if request.method == "GET":
+        return render_template("recipes/new.html", form = RecipeForm(prefix=prefix))
+
     # Lyhyempi tapa etsiä kenttiä lähetetystä datasta
     data = request.form
-    form = RecipeForm(data, prefix="recipe-")
+    form = RecipeForm(data, prefix=prefix)
 
     if not form.validate():
         return render_template("recipes/new.html", form = form, error = "Täytä kaikki tähdellä merkityt kentät")
 
     # Etsi kentät ja muunna oikeaan formaattiin (esim. kokonaisluvut int, vaikkei Python ole vahvasti tyypitetty ohjelmointikieli)
-    recipe_name = data["recipe-name"].strip()
-    recipe_recipe = data["recipe-recipe"].strip()
-    recipe_desc = data["recipe-description"].strip()
+    recipe_name = data[prefix + "name"].strip()
+    recipe_recipe = data[prefix + "recipe"].strip()
+    recipe_desc = data[prefix + "description"].strip()
     cooking_time_hours = int(data["cooking-time-hours"].strip())
     cooking_time_minutes = int(data["cooking-time-minutes"].strip())
 
@@ -64,5 +64,5 @@ def recipes_create():
     # TODO: uudelleenohjaus reseptin sivulle
     new_recipe_id = cursor.lastrowid
     cursor.close()
-    
+
     return redirect(url_for("recipes_list"))
