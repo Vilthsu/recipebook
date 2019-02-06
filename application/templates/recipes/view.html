@@ -3,7 +3,7 @@
 {% block body %}
 {% if not recipe %}
 <h1>Reseptiä ei löytynyt!</h1>
-<p>Valitettavasti etsimääsi reseptiä ei löytynyt. <a href="{{ url_for('recipe_list') }}"></a></p>
+<p>Valitettavasti etsimääsi reseptiä ei löytynyt. <a href="{{ url_for('recipe_list') }}">Selaa kaikkia reseptejä</a></p>
 {% else %}
 <h1>{{ recipe.nimi }}</h1>
 <div id="recipe-view-description">
