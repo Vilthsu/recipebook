@@ -9,3 +9,10 @@ class RecipeForm(FlaskForm):
  
     class Meta:
         csrf = False
+
+class LoginForm(FlaskForm):
+    email = StringField("Sähköpostiosoite")
+    password = PasswordField("Salasana")
+  
+    class Meta:
+        csrf = False

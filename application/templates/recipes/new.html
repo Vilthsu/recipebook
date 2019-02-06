@@ -1,20 +1,5 @@
 {% extends "layout.html" %}
-  
 {% block body %}
-<style>
-#recipe-cooking-time-custom-input {
-    padding: 0;
-}
-
-#recipe-cooking-time-custom-input .form-group.col-md-3 {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.required-mark {
-    color: red;
-}
-</style>
 <h1>Lisää resepti</h1>
 <p>
     <span class="required-mark">*</span> = pakollinen kenttä
@@ -30,7 +15,7 @@
         {{ form.name(class_="form-control") }}
     </div>
     <!-- Custom field -->
-    <div class="col-md-6 mb-3" id="recipe-cooking-time-custom-input">
+    <div class="col-md-6 mb-3 input-no-padding">
         <label for="recipe-cooking-time-hours">Valmistusaika</label> <span class="required-mark">*</span>
         <div class="form-inline">
             <div class="form-group col-md-3">

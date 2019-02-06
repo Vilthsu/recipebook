@@ -1,0 +1,15 @@
+$input-no-padding: 0;
+$required-color: #F00;
+
+.input-no-padding {
+    padding: $input-no-padding;
+
+    .form-group.col-md-3 {
+        padding-left: $input-no-padding;
+        padding-right: $input-no-padding;
+    }
+}
+
+.required-mark {
+    color: $required-color;
+}
