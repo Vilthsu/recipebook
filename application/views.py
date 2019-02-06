@@ -1,7 +1,7 @@
 from application import app, db
 from flask import redirect, render_template, request, url_for
-from application.tasks.models import Resepti, Valmistusaika
-from application.tasks.forms import RecipeForm
+from application.recipes.models import Resepti, Valmistusaika
+from application.recipes.forms import RecipeForm, LoginForm
 
 # Index-sivu
 @app.route("/")
@@ -15,14 +15,18 @@ def recipes_list():
     return render_template("recipes/list.html", recipes = Resepti.query.all())
 
 # Uuden reseptin lisäys
-@app.route("/recipes/new")
+@app.route("/recipes/new", methods=["GET"])
 def recipes_new():
     return render_template("recipes/new.html", form = RecipeForm(prefix="recipe-"))
 
-@app.route("/recipes/", methods=["POST"])
+@app.route("/recipes/new", methods=["POST"])
 def recipes_create():
     # Lyhyempi tapa etsiä kenttiä lähetetystä datasta
     data = request.form
+    form = RecipeForm(data, prefix="recipe-")
+
+    if not form.validate():
+        return render_template("recipes/new.html", form = form)
 
     # Etsi kentät ja muunna oikeaan formaattiin (esim. kokonaisluvut int, vaikkei Python ole vahvasti tyypitetty ohjelmointikieli)
     recipe_name = data["recipe-name"]
@@ -33,11 +37,11 @@ def recipes_create():
 
     # Validoi arvot, arvojen pituus pitää olla suurempi kuin nolla (0)
     if len(recipe_name) == 0 or len(recipe_recipe) == 0 or len(recipe_desc) == 0:
-        return "Täytä kaikki pakolliset kentät"
+        return render_template("recipes/new.html", form = form, error = "Täytä kaikki tähdellä merkityt kentät")
 
     # Validoi valmistusaika
     if cooking_time_hours == None or cooking_time_minutes == None or (cooking_time_hours == 0 and cooking_time_minutes == 0):
-        return "Virheellinen valmistusaika"
+        return render_template("recipes/new.html", form = form, error = "Virheellinen valmistusaika")
 
     # Etsitään jo olemassa oleva valmistusaika
     cursor = db.engine.execute("SELECT id FROM valmistusaika WHERE tunti = ? AND minuutti = ? LIMIT 1", cooking_time_hours, cooking_time_minutes)
@@ -66,4 +70,9 @@ def recipes_create():
     # TODO: uudelleenohjaus
     new_recipe_id = cursor.lastrowid
     cursor.close()
-    return "lisätty: " + str(new_recipe_id)
+    return redirect(url_for("recipes_list")) 
+
+@app.route("/login", methods = ["GET", "POST"])
+def login():
+    if request.method == "GET":
+        return render_template("auth/loginform.html", form = LoginForm())
