@@ -1,0 +1,23 @@
+.feathericons-font-size {
+  height: 1em;
+  width: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.feathericons-w-1 {
+  stroke-width: 1;
+}
+
+.feathericons-w-2 {
+  stroke-width: 2;
+}
+
+.feathericons-w-3 {
+  stroke-width: 3;
+}
+
+.feathericons-w-4 {
+  stroke-width: 4;
+}

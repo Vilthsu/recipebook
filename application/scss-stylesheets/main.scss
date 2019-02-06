@@ -1,0 +1,13 @@
+.feathericons-font-size {
+    height: 1em;
+    width: 1em;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+@for $i from 1 through 4 {
+    .feathericons-w-#{$i} {
+        stroke-width: #{$i};
+    }
+}

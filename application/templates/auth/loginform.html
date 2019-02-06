@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% set active_page = "auth-login" %}
   
 {% block body %}
 <form method="POST" action="{{ url_for('login') }}" role="form">
