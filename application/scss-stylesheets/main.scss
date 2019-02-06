@@ -1,6 +1,10 @@
 $rotation-step: 45;
 $rotation-max: 360;
 
+.row.no-margin {
+    margin: 0;
+}
+
 .feathericons-font-size {
     height: 1em;
     width: 1em;
@@ -56,6 +60,38 @@ $rotation-max: 360;
             &:hover {
                 color: #FFF;
             }
+        }
+    }
+}
+
+.horizontal-scroll-snap {
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    padding: 0;
+    white-space: nowrap;
+
+    & > * {
+        white-space: normal;
+        scroll-snap-align: start;
+        display: inline-block;
+    }
+}
+
+.latest-recipe-card {
+    margin: 0 1rem;
+    width: 20rem;
+
+    &:first-child {
+        margin-left: 0;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    & > .card-body > .card-title {
+        & > h5, & > .recipe-cooking-time-box {
+            display: inline-block;
         }
     }
 }

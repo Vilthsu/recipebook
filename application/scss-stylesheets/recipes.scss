@@ -13,3 +13,10 @@ $required-color: #F00;
 .required-mark {
     color: $required-color;
 }
+
+#recipe-view-description {
+    padding: 1em;
+    font-size: 1.15em;
+    background: #f8f9fa;
+    margin: 1.25em 1.15em;
+}

@@ -1,6 +1,26 @@
 {% extends "layout.html" %}
   
 {% block body %}
-<h1>%reseptin_nimi%</h1>
-
+{% if not recipe %}
+<h1>Reseptiä ei löytynyt!</h1>
+<p>Valitettavasti etsimääsi reseptiä ei löytynyt. <a href="{{ url_for('recipe_list') }}"></a></p>
+{% else %}
+<h1>{{ recipe.nimi }}</h1>
+<div id="recipe-view-description">
+    {{ recipe.kuvaus }}
+</div>
+<div class="row">
+    <div class="col-6">
+        <h3>Raaka-aineet</h3>
+        (lista raaka-aineista)
+    </div>
+    <div class="col-6">
+        (kuva)
+    </div>
+</div>
+<div id="recipe-view-recipe">
+    <h3>Valmistusohje</h3>
+    {{ recipe.valmistusohje }}
+</div>
+{% endif %}
 {% endblock %}

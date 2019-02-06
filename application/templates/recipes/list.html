@@ -22,7 +22,7 @@
     {% for recipe in recipes %}
     <li class="list-group-item recipe-item">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ recipe.nimi }}</h5>
+            <h5 class="mb-1"><a href="{{ url_for('recipes_view', recipe_id=recipe.id) }}">{{ recipe.nimi }}</a></h5>
             <div class="recipe-cooking-time-box">
                 <span class="recipe-cooking-time badge badge-pill badge-secondary">
                     <i data-feather="clock" class="feathericons-font-size feathericons-w-3"></i>

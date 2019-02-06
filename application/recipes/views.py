@@ -39,7 +39,7 @@ def recipes_new():
 
     # Etsitään jo olemassa oleva valmistusaika
     cursor = db.engine.execute("SELECT id FROM valmistusaika WHERE tunti = ? AND minuutti = ? LIMIT 1", cooking_time_hours, cooking_time_minutes)
-    
+
     # Haetaan tiedot
     cooking_time = cursor.fetchone()
 
@@ -66,3 +66,9 @@ def recipes_new():
     cursor.close()
 
     return redirect(url_for("recipes_list"))
+
+# Reseptisivu
+@app.route("/recipes/<recipe_id>", methods=["GET"])
+def recipes_view(recipe_id):
+    recipe = Resepti.query.get(recipe_id)
+    return render_template("recipes/view.html", recipe=recipe)

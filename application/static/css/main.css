@@ -1,3 +1,7 @@
+.row.no-margin {
+  margin: 0;
+}
+
 .feathericons-font-size {
   height: 1em;
   width: 1em;
@@ -244,4 +248,35 @@
 
 .navbar-dark .nav-link.nav-link-light:hover {
   color: #FFF;
+}
+
+.horizontal-scroll-snap {
+  -ms-scroll-snap-type: x mandatory;
+      scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.horizontal-scroll-snap > * {
+  white-space: normal;
+  scroll-snap-align: start;
+  display: inline-block;
+}
+
+.latest-recipe-card {
+  margin: 0 1rem;
+  width: 20rem;
+}
+
+.latest-recipe-card:first-child {
+  margin-left: 0;
+}
+
+.latest-recipe-card:last-child {
+  margin-right: 0;
+}
+
+.latest-recipe-card > .card-body > .card-title > h5, .latest-recipe-card > .card-body > .card-title > .recipe-cooking-time-box {
+  display: inline-block;
 }
