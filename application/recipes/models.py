@@ -6,13 +6,17 @@ class Resepti(db.Model):
     valmistusaika_id = db.Column(db.Integer, db.ForeignKey('valmistusaika.id'))
     valmistusohje = db.Column(db.String(), nullable=False)
     kuvaus = db.Column(db.String(255), nullable=False)
-    
+    luotu = db.Column(db.DateTime, default=db.func.current_timestamp())
+
     # Vierasavaimet
     valmistusaika = db.relationship('Valmistusaika', foreign_keys=valmistusaika_id)
 
-    def __init__(self, name):
-        self.name = name
-        
+    def __init__(self, nimi, valmistusaika_id, valmistusohje, kuvaus):
+        self.nimi = nimi
+        self.valmistusaika_id = valmistusaika_id
+        self.valmistusohje = valmistusohje
+        self.kuvaus = kuvaus
+
 class Valmistusaika(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tunti = db.Column(db.Integer, nullable=False)

@@ -1,31 +1,24 @@
 {% extends "layout.html" %}
-  
+{% set active_page = "recipes-add" %}
+
 {% block body %}
-<style>
-#recipe-cooking-time-custom-input {
-    padding: 0;
-}
-
-#recipe-cooking-time-custom-input .form-group.col-md-3 {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.required-mark {
-    color: red;
-}
-</style>
 <h1>Lisää resepti</h1>
 <p>
     <span class="required-mark">*</span> = pakollinen kenttä
 </p>
-<form method="POST" action="{{ url_for('recipes_create') }}" role="form">
+{% if error %}
+<div class="alert alert-danger" id="main-error-alert" role="alert">
+    <i data-feather="alert-circle" class="feathericons-font-size feathericons-w-2 alert-icon"></i> {{ error }}
+</div>
+{% endif %}
+<form method="POST" action="{{ url_for('recipes_new') }}" role="form">
     <div class="form-group">
-        <label for="recipe-name">Nimi <span class="required-mark">*</span></label> 
-        <input type="text" class="form-control" id="recipe-name" name="recipe-name" required/>
+        {{ form.name.label }} <span class="required-mark">*</span>
+        {{ form.name(class_="form-control") }}
     </div>
-    <div class="col-md-6 mb-3" id="recipe-cooking-time-custom-input">
-        <label for="recipe-cooking-time-hours">Valmistusaika <span class="required-mark">*</span></label>
+    <!-- Custom field -->
+    <div class="col-md-6 mb-3 input-no-padding">
+        <label for="recipe-cooking-time-hours">Valmistusaika</label> <span class="required-mark">*</span>
         <div class="form-inline">
             <div class="form-group col-md-3">
                 <div class="input-group">
@@ -48,12 +41,12 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="recipe-recipe">Valmistusohje <span class="required-mark">*</span></label> 
-        <textarea class="form-control" id="recipe-recipe" name="recipe-recipe" required></textarea>
+        {{ form.recipe.label }} <span class="required-mark">*</span>
+        {{ form.recipe(class_="form-control") }}
     </div>
     <div class="form-group">
-        <label for="recipe-description">Kuvaus <span class="required-mark">*</span></label> 
-        <textarea class="form-control" id="recipe-description" name="recipe-description" required></textarea>
+        {{ form.description.label }} <span class="required-mark">*</span>
+        {{ form.description(class_="form-control") }}
     </div>
     <button type="submit" class="btn btn-primary">Lisää resepti</button>
 </form>
