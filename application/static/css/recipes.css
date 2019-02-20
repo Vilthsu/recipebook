@@ -17,3 +17,16 @@
   background: #f8f9fa;
   margin: 1.25em 1.15em;
 }
+
+.small-font-list {
+  font-size: small;
+  list-style: none;
+}
+
+.small-font-list.no-indent {
+  padding: 0;
+}
+
+.recipe-material {
+  margin: .5em 0;
+}

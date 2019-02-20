@@ -1,6 +1,6 @@
 from application import app, db
 from flask import redirect, render_template, request, url_for
-from application.recipes.models import Resepti, Valmistusaika
+from application.recipes.models import Resepti, Valmistusaika, MaaraYksikko
 from application.recipes.forms import RecipeForm
 from flask_login import login_required
 
@@ -15,16 +15,17 @@ def recipes_list():
 @login_required
 def recipes_new():
     prefix = "recipe-"
+    units = MaaraYksikko.query.all()
 
     if request.method == "GET":
-        return render_template("recipes/new.html", form = RecipeForm(prefix=prefix))
+        return render_template("recipes/new.html", form = RecipeForm(prefix=prefix), units = units)
 
     # Lyhyempi tapa etsiä kenttiä lähetetystä datasta
     data = request.form
     form = RecipeForm(data, prefix=prefix)
 
     if not form.validate():
-        return render_template("recipes/new.html", form = form, error = "Täytä kaikki tähdellä merkityt kentät")
+        return render_template("recipes/new.html", form = form, units = units, error = "Täytä kaikki tähdellä merkityt kentät")
 
     # Etsi kentät ja muunna oikeaan formaattiin (esim. kokonaisluvut int, vaikkei Python ole vahvasti tyypitetty ohjelmointikieli)
     recipe_name = data[prefix + "name"].strip()

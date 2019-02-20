@@ -1,4 +1,22 @@
 from application import db
+        
+class Valmistusaika(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tunti = db.Column(db.Integer, nullable=False)
+    minuutti = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, tunti, minuutti):
+        self.tunti = tunti
+        self.minuutti = minuutti
+
+class MaaraYksikko(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nimi = db.Column(db.String(20), nullable=False)
+    ryhma_nro = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, nimi, ryhma_nro):
+        self.nimi = nimi
+        self.ryhma_nro = ryhma_nro
 
 class Resepti(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -17,11 +35,16 @@ class Resepti(db.Model):
         self.valmistusohje = valmistusohje
         self.kuvaus = kuvaus
 
-class Valmistusaika(db.Model):
+class RaakaAine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tunti = db.Column(db.Integer, nullable=False)
-    minuutti = db.Column(db.Integer, nullable=False)
+    nimi = db.Column(db.String(100), nullable=False)
+    maara = db.Column(db.Numeric(precision=3, asdecimal=False, decimal_return_scale=None), nullable=False)
+    maara_yksikko_id = db.Column(db.Integer, db.ForeignKey('maara_yksikko.id'))
 
-    def __init__(self, tunti, minuutti):
-        self.tunti = tunti
-        self.minuutti = minuutti
+    # Vierasavaimet
+    maarayksikko = db.relationship('MaaraYksikko', foreign_keys=maara_yksikko_id)
+
+    def __init__(self, nimi, maara, maara_yksikko_id):
+        self.nimi = nimi
+        self.maara = maara
+        self.maara_yksikko_id = maara_yksikko_id
