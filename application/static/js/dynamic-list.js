@@ -15,7 +15,7 @@ dynamicLists.forEach(el => {
         return;
     }
 
-    var template = items[0];
+    var template = items[0].cloneNode(true);
 
     if (!template || template === null) {
         console.error('Invalid template!');

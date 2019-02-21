@@ -52,7 +52,7 @@
                     <input type="text" class="form-control list-item-auto-increment-trigger-input" placeholder="Raaka-aineen nimi">
                 </div>
                 <div class="input-group col-2">
-                    <input type="number" class="form-control">
+                    <input type="number" class="form-control" placeholder="Määrä">
                     <div class="input-group-append">
                         <span class="input-group-text recipe-material-unit"></span>
                     </div>
@@ -61,9 +61,9 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle material list</span>
                         </button>
-                        <div class="dropdown-menu recipe-material-unit-list">
+                        <div class="dropdown-menu value-output recipe-material-unit-list" data-value-output=".recipe-material-unit">
                             {% for unit in units %}
-                            <a class="dropdown-item recipe-material-unit-list-item" data-value="{{ unit.nimi }}" href="#">
+                            <a class="dropdown-item recipe-material-unit-list-item" data-value="{{ unit.nimi }}" href="javascript:;">
                                 {% if not unit.nimi %}
                                 Ei yksikköä
                                 {% else %}
