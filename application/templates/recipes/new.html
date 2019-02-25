@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% set active_page = "recipes-add" %}
+{% set ns = namespace(unit_group_no=0) %}
 
 {% block body %}
 <h1>Lisää resepti</h1>
@@ -22,7 +23,8 @@
         <div class="form-inline">
             <div class="form-group col-md-3">
                 <div class="input-group">
-                    <input type="number" class="form-control" min="0" id="recipe-cooking-time-hours" name="cooking-time-hours" required/>
+                    <input type="number" class="form-control" min="0" id="recipe-cooking-time-hours"
+                        name="cooking-time-hours" required />
                     <div class="input-group-append">
                         <!-- An ugly hack to make "h" wider (compare to "min") -->
                         <span class="input-group-text">&nbsp;h&nbsp;</span>
@@ -32,7 +34,8 @@
             <span style="height: 1px; width: 1.25rem; display: inline-block;"></span>
             <div class="form-group col-md-3">
                 <div class="input-group">
-                    <input type="number" class="form-control" min="0" max="59" maxlength="2" id="recipe-cooking-time-minutes" name="cooking-time-minutes" required/>
+                    <input type="number" class="form-control" min="0" max="59" maxlength="2"
+                        id="recipe-cooking-time-minutes" name="cooking-time-minutes" required />
                     <div class="input-group-append">
                         <span class="input-group-text">min</span>
                     </div>
@@ -40,9 +43,56 @@
             </div>
         </div>
     </div>
+    <div class="form-group" id="recipe-ingredient-list">
+        Raaka-aineet
+        <!-- Simple JavaScript based dynamic list -->
+        <div class="list-item-auto-increment" data-item-template=".recipe-ingredient">
+            <div class="form-inline recipe-ingredient">
+                <div class="input-group col-8">
+                    <input type="text" class="form-control list-item-auto-increment-trigger-input" data-name="{{ prefix }}ingredient-name[]" name="{{ prefix }}ingredient-name[0]" placeholder="Raaka-aineen nimi">
+                </div>
+                <div class="input-group col-2">
+                    <input type="number" class="form-control" data-name="{{ prefix }}ingredient-amount[]" name="{{ prefix }}ingredient-amount[0]" placeholder="Määrä" />
+                    <div class="input-group-append">
+                        <span class="input-group-text recipe-ingredient-unit"></span>
+                    </div>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Valitse yksikkö">
+                            <span class="sr-only">Toggle ingredient list</span>
+                        </button>
+                        <div class="dropdown-menu value-output recipe-ingredient-unit-list" data-value-output=".recipe-ingredient-unit" data-value-input=".recipe-ingredient-unit-input">
+                            {% for unit in units %}
+                            {% if unit.ryhma_nro != ns.unit_group_no %}
+                            {% set ns.unit_group_no = unit.ryhma_nro %}
+                            <div role="separator" class="dropdown-divider"></div>
+                            {% endif %}
+                            <a class="dropdown-item recipe-ingredient-unit-list-item" data-value="{{ unit.nimi }}" href="javascript:;">
+                                {% if not unit.nimi %}
+                                Ei yksikköä
+                                {% else %}
+                                {{ unit.nimi }}
+                                {% endif %}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" class="recipe-ingredient-unit-input" data-name="{{ prefix }}ingredient-unit[]" name="{{ prefix }}ingredient-unit[0]" />
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" class="dynamic-list-length-tracker" name="{{ prefix }}ingredient-total" value="1" />
+        </div>
+        <ul id="ingredient-info" class="form-text text-muted small-font-list no-indent">
+            <li>Uudet kentät uusille raaka-aineille ilmestyvät automaattisesti.</li>
+            <li>Tyhjiä rivejä (= rivit, joissa raaka-aineen nimi on tyhjä) ei huomioida mutta raaka-aineita tulee olla vähintään yksi.</li>
+            <li>Sama raaka-aine voi esiintyä listassa vain kerran.</li>
+            <li>Raaka-aineen määrä ja määrän yksikkö ovat vapaaehtoisia, koska on tilanteita, joissa raaka-aineen lisäys voi olla esim. "maun mukaan" tms..</li>
+        </ul>
+    </div>
     <div class="form-group">
         {{ form.recipe.label }} <span class="required-mark">*</span>
         {{ form.recipe(class_="form-control") }}
+        <small class="form-text text-muted"></small>
     </div>
     <div class="form-group">
         {{ form.description.label }} <span class="required-mark">*</span>

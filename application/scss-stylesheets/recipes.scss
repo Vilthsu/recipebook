@@ -20,3 +20,16 @@ $required-color: #F00;
     background: #f8f9fa;
     margin: 1.25em 1.15em;
 }
+
+.small-font-list {
+    font-size: small;
+    list-style: none;
+
+    &.no-indent {
+        padding: 0;
+    }
+}
+
+.recipe-ingredient {
+    margin: .5em 0;
+}
