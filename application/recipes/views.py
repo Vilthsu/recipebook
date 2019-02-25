@@ -18,14 +18,16 @@ def recipes_new():
     units = MaaraYksikko.query.all()
 
     if request.method == "GET":
-        return render_template("recipes/new.html", form = RecipeForm(prefix=prefix), units = units)
+        return render_template("recipes/new.html", form = RecipeForm(prefix=prefix), prefix = prefix, units = units)
 
     # Lyhyempi tapa etsiä kenttiä lähetetystä datasta
     data = request.form
     form = RecipeForm(data, prefix=prefix)
 
     if not form.validate():
-        return render_template("recipes/new.html", form = form, units = units, error = "Täytä kaikki tähdellä merkityt kentät")
+        return render_template("recipes/new.html", form = form, prefix = prefix, units = units, error = "Täytä kaikki tähdellä merkityt kentät")
+
+    # return str(data)
 
     # Etsi kentät ja muunna oikeaan formaattiin (esim. kokonaisluvut int, vaikkei Python ole vahvasti tyypitetty ohjelmointikieli)
     recipe_name = data[prefix + "name"].strip()
@@ -33,10 +35,22 @@ def recipes_new():
     recipe_desc = data[prefix + "description"].strip()
     cooking_time_hours = int(data["cooking-time-hours"].strip())
     cooking_time_minutes = int(data["cooking-time-minutes"].strip())
+    recipe_ingredient_total = int(data[prefix + "ingredient-total"].strip())
 
     # Validoi valmistusaika
     if cooking_time_hours == 0 and cooking_time_minutes == 0:
-        return render_template("recipes/new.html", form = form, error = "Virheellinen valmistusaika")
+        return render_template("recipes/new.html", form = form, prefix = prefix, units = units, error = "Virheellinen valmistusaika")
+
+    # Validoi raaka-aineiden määrä
+    if recipe_ingredient_total <= 0 or not data[prefix + "ingredient-name[0]"]:
+        return render_template("recipes/new.html", form = form, prefix = prefix, units = units, error = "Raaka-aineita tulee olla vähintään yksi")
+
+    # Käydään läpi lähetetyt raaka-aineet
+    for i in range(0, recipe_ingredient_total - 1):
+        # Etsitään jo olemassa oleva raaka-aine
+        #cursor = db.engine.execute("SELECT id FROM valmistusaika WHERE tunti = ? AND minuutti = ? LIMIT 1", cooking_time_hours, cooking_time_minutes)
+        if data[prefix + "ingredient-name[" + str(i) + "]"]:
+            print("name=" + data[prefix + "ingredient-name[" + str(i) + "]"] + ",amount=" + str(data[prefix + "ingredient-amount[" + str(i) + "]"]) + ",unit=" + data[prefix + "ingredient-unit[" + str(i) + "]"])
 
     # Etsitään jo olemassa oleva valmistusaika
     cursor = db.engine.execute("SELECT id FROM valmistusaika WHERE tunti = ? AND minuutti = ? LIMIT 1", cooking_time_hours, cooking_time_minutes)

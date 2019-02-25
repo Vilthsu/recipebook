@@ -1,4 +1,4 @@
-DELETE * FROM maara_yksikko;
+DELETE FROM maara_yksikko;
 
 INSERT INTO maara_yksikko (nimi, ryhma_nro) VALUES
     ('', 0),
