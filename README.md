@@ -12,8 +12,9 @@ TODO-lista ominaisuuksista ym. on löydettävissä repositoryn issues -osiosta.
 ~Sovellus on nähtävillä Herokussa osoitteessa: https://frozen-ocean-30894.herokuapp.com/ (repositoryn "recipebook" nimi ei ollut vapaana Herokussa)~
 
 ## Testitunnukset
-Sähköpostiosoite: test@localhost
-Salasana test1234
+| Sähköpostiosoite | Salasana |
+|------------------|----------|
+| test@localhost   | test1234 |
 
 (Voit myös luoda omat tunnukset rekisteröitymissivun avulla)
 
