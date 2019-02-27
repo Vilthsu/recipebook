@@ -197,12 +197,14 @@ def recipes_edit(recipe_id):
         data[prefix + "ingredient-amount"] = []
         data[prefix + "ingredient-unit"] = []
         
-        i = 0
         for ingredient in ingredients:
             if ingredient.raaka_aine:
                 raaka_aine = ingredient.raaka_aine.nimi
                 maara = ingredient.maara
                 
+                if maara == 0:
+                    maara = ""
+
                 if ingredient.maara_yksikko:
                     yksikko = ingredient.maara_yksikko.nimi
                 else:
@@ -212,12 +214,20 @@ def recipes_edit(recipe_id):
                 data[prefix + "ingredient-amount"].append(maara)
                 data[prefix + "ingredient-unit"].append(yksikko)
 
-                i += 1
+        default_data = {}
+        default_data["name"] = recipe.nimi
+        default_data["recipe"] = recipe.valmistusohje
+        default_data["description"] = recipe.kuvaus
 
         # Lomakkeen rakentaminen, lomake-olio
-        form = RecipeForm(prefix=prefix)
+        form = RecipeForm(data=default_data, prefix=prefix)
+        form.name.default = recipe.nimi
+        form.description.default = recipe.kuvaus
+        form.recipe.default = recipe.valmistusohje
 
-        return render_template("recipes/form.html", form = form, id = recipe.id, title = title, form_action = form_action, units = units, data = data)
+        ingredient_count = len(data[prefix + "ingredient-name"])
+
+        return render_template("recipes/form.html", form = form, prefix = prefix, id = recipe.id, title = title, form_action = form_action, units = units, default_data = data, ingredient_count = ingredient_count)
     
     return ""
 
