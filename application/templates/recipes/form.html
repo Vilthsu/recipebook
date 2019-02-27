@@ -3,7 +3,7 @@
 {% set ns = namespace(unit_group_no=0) %}
 
 {% block body %}
-<h1>Lisää resepti</h1>
+<h1>{{ title }}</h1>
 <p>
     <span class="required-mark">*</span> = pakollinen kenttä
 </p>
@@ -12,7 +12,10 @@
     <i data-feather="alert-circle" class="feathericons-font-size feathericons-w-2 alert-icon"></i> {{ error }}
 </div>
 {% endif %}
-<form method="POST" action="{{ url_for('recipes_new') }}" role="form">
+<form method="POST" action="{{ form_action }}" role="form">
+    {% if id %}
+    <input type="hidden" name="recipe-id" value="{{ id }}">
+    {% endif %}
     <div class="form-group">
         {{ form.name.label }} <span class="required-mark">*</span>
         {{ form.name(class_="form-control") }}

@@ -6,16 +6,30 @@
 <p>Valitettavasti etsimääsi reseptiä ei löytynyt. <a href="{{ url_for('recipe_list') }}">Selaa kaikkia reseptejä</a></p>
 {% else %}
 <h1>{{ recipe.nimi }}</h1>
+{% if owner == True %}
+<a href="{{ url_for('recipes_edit', recipe_id=recipe.id) }}" class="btn btn-primary btn-sm">Muokkaa reseptiä</a> <a href="{{ url_for('recipes_delete', recipe_id=recipe.id) }}" class="btn btn-danger btn-sm">Poista resepti</a>
+{% endif %}
 <div id="recipe-view-description">
     {{ recipe.kuvaus }}
 </div>
 <div class="row">
     <div class="col-6">
         <h3>Raaka-aineet</h3>
-        (lista raaka-aineista)
+        <ul class="list-no-style" style="max-width: 25em">
+            {% for ingredient in ingredients %}
+            <li>{{ ingredient.raaka_aine.nimi }}
+            {% if ingredient.maara > 0 %}
+                <span class="badge badge-pill badge-light float-right">{{ ingredient.maara }} {{ ingredient.maara_yksikko.nimi }}</span>
+            {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
     </div>
     <div class="col-6">
-        (kuva)
+        <div class="m-2">
+            <img src="https://via.placeholder.com/510x240.png" />
+            <a href="https://placeholder.com/" target="_blank"><small class="text-muted">Kuvan lähde: https://placeholder.com/</small></a>
+        </div>
     </div>
 </div>
 <div id="recipe-view-recipe">

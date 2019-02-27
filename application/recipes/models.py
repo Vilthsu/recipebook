@@ -25,13 +25,16 @@ class Resepti(db.Model):
     valmistusohje = db.Column(db.String(), nullable=False)
     kuvaus = db.Column(db.String(255), nullable=False)
     luotu = db.Column(db.DateTime, default=db.func.current_timestamp())
+    kayttaja_id = db.Column(db.Integer, db.ForeignKey('kayttaja.id'))
 
     # Vierasavaimet
     valmistusaika = db.relationship('Valmistusaika', foreign_keys=valmistusaika_id)
+    kayttaja = db.relationship('Kayttaja', foreign_keys=kayttaja_id)
 
-    def __init__(self, nimi, valmistusaika_id, valmistusohje, kuvaus):
+    def __init__(self, nimi, valmistusaika_id, kayttaja_id, valmistusohje, kuvaus):
         self.nimi = nimi
         self.valmistusaika_id = valmistusaika_id
+        self.kayttaja_id = kayttaja_id
         self.valmistusohje = valmistusohje
         self.kuvaus = kuvaus
 
@@ -52,7 +55,7 @@ class ReseptiRaakaAine(db.Model):
     # Vierasavaimet
     resepti = db.relationship('Resepti', foreign_keys=resepti_id)
     raaka_aine = db.relationship('RaakaAine', foreign_keys=raaka_aine_id)
-    maarayksikko = db.relationship('MaaraYksikko', foreign_keys=maara_yksikko_id)
+    maara_yksikko = db.relationship('MaaraYksikko', foreign_keys=maara_yksikko_id)
 
     def __init__(self, maara, maara_yksikko_id):
         self.maara = maara
