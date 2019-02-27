@@ -18,11 +18,11 @@
           <div class="recipe-cooking-time-box float-right">
             <span class="recipe-cooking-time badge badge-pill badge-secondary">
               <i data-feather="clock" class="feathericons-font-size feathericons-w-3"></i>
-              {% if recipe.valmistusaika.tunti > 0 %}
-              {{ recipe.valmistusaika.tunti }} h
+              {% if recipe.tunti > 0 %}
+              {{ recipe.tunti }} h
               {% endif %}
-              {% if recipe.valmistusaika.minuutti > 0 %}
-              {{ recipe.valmistusaika.minuutti }} min
+              {% if recipe.minuutti > 0 %}
+              {{ recipe.minuutti }} min
               {% endif %}
             </span>
           </div>
@@ -40,5 +40,35 @@
     <a class="btn btn-light float-right" href="{{ url_for('recipes_list') }}">Kaikki reseptit <i data-feather="arrow-right-circle"
         class="feathericon-font-size feathericon-w-2" style="margin-left: 0.5em"></i></a>
   </div>
+</div>
+<h3>Viimeisimmät alle 15 min reseptit</h3>
+<div class="row no-margin">
+  {% if not quick_recipes %}
+  <p>Alle 15 min reseptejä ei löytynyt.</p>
+  {% else %}
+  <div class="col-12 horizontal-scroll-snap">
+    {% for recipe in quick_recipes %}
+    <div class="card latest-recipe-card">
+      <img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_168c4ade040%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_168c4ade040%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.203125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+        alt="Card image cap">
+      <div class="card-body">
+        <div class="card-title">
+          <h5>{{ recipe.nimi }}</h5>
+          <div class="recipe-cooking-time-box float-right">
+            <span class="recipe-cooking-time badge badge-pill badge-secondary">
+              <i data-feather="clock" class="feathericons-font-size feathericons-w-3"></i>
+              {% if recipe.minuutti > 0 %}
+              {{ recipe.minuutti }} min
+              {% endif %}
+            </span>
+          </div>
+        </div>
+        <p class="card-text">{{ recipe.kuvaus }}</p>
+        <a href="{{ url_for('recipes_view', recipe_id=recipe.id) }}" class="btn btn-primary">Avaa resepti</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 </div>
 {% endblock %}
