@@ -1,4 +1,5 @@
 # Tietokantakyselyjä
+## Sivuilla olevat tietokantakyselyt
 Raaka-aineet ja valmistusaika
 ```
 SELECT id FROM maara_yksikko WHERE nimi = ? LIMIT 1
@@ -42,3 +43,79 @@ SELECT salasana FROM kayttaja WHERE sahkopostiosoite = ? LIMIT 1 /* Salasanaa k�
 ```
 
 Reseptin päivittäminen (tulossa)
+
+## Create-kyselyt
+Valmistusaika-taulu
+```
+CREATE TABLE valmistusaika (
+        id INTEGER NOT NULL,
+        tunti INTEGER NOT NULL,
+        minuutti INTEGER NOT NULL,
+        PRIMARY KEY (id)
+);
+```
+
+Käyttäjä-taulu
+```
+CREATE TABLE kayttaja (
+        id INTEGER NOT NULL,
+        kayttajatunnus VARCHAR(50),
+        salasana VARCHAR(50) NOT NULL,
+        etunimi VARCHAR(50) NOT NULL,
+        sukunimi VARCHAR(50) NOT NULL,
+        sahkopostiosoite VARCHAR(100) NOT NULL,
+        rekisteroitynyt DATETIME,
+        muokattu DATETIME,
+        PRIMARY KEY (id)
+);
+```
+
+Määrä-yksikkö-taulu
+```
+CREATE TABLE maara_yksikko (
+        id INTEGER NOT NULL,
+        nimi VARCHAR(20) NOT NULL,
+        ryhma_nro INTEGER NOT NULL,
+        PRIMARY KEY (id)
+);
+```
+
+Resepti-taulu
+```
+CREATE TABLE resepti (
+        id INTEGER NOT NULL,
+        nimi VARCHAR(255) NOT NULL,
+        valmistusaika_id INTEGER,
+        valmistusohje VARCHAR NOT NULL,
+        kuvaus VARCHAR(255) NOT NULL,
+        luotu DATETIME,
+        kayttaja_id INTEGER,
+        PRIMARY KEY (id),
+        FOREIGN KEY(valmistusaika_id) REFERENCES valmistusaika (id),
+        FOREIGN KEY(kayttaja_id) REFERENCES kayttaja (id)
+);
+```
+
+Raaka-aine-taulu
+```
+CREATE TABLE raaka_aine (
+        id INTEGER NOT NULL,
+        nimi VARCHAR(100) NOT NULL,
+        PRIMARY KEY (id)
+);
+```
+
+Resepti-raaka-aine-taulu (sekä liitos- että normaalitaulu lisätiedoilla (määrä) eli voisiko sanoa "hybriditaulu"?)
+```
+CREATE TABLE resepti_raaka_aine (
+        id INTEGER NOT NULL,
+        resepti_id INTEGER,
+        raaka_aine_id INTEGER,
+        maara NUMERIC(3) NOT NULL,
+        maara_yksikko_id INTEGER,
+        PRIMARY KEY (id),
+        FOREIGN KEY(resepti_id) REFERENCES resepti (id),
+        FOREIGN KEY(raaka_aine_id) REFERENCES raaka_aine (id),
+        FOREIGN KEY(maara_yksikko_id) REFERENCES maara_yksikko (id)
+);
+```
