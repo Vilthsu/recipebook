@@ -1,8 +1,8 @@
 from application import app, db
 from flask import redirect, render_template, request, url_for
-from application.recipes.models import Resepti, Valmistusaika, MaaraYksikko
+from application.recipes.models import Resepti, Valmistusaika, MaaraYksikko, ReseptiRaakaAine
 from application.recipes.forms import RecipeForm
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 # Kaikki reseptit
 @app.route("/recipes")
@@ -15,19 +15,19 @@ def recipes_list():
 @login_required
 def recipes_new():
     prefix = "recipe-"
+    title = "Lisää resepti"
+    form_action = url_for('recipes_new')
     units = MaaraYksikko.query.all()
 
     if request.method == "GET":
-        return render_template("recipes/new.html", form = RecipeForm(prefix=prefix), prefix = prefix, units = units)
+        return render_template("recipes/form.html", form = RecipeForm(prefix=prefix), prefix = prefix, units = units, title = title, form_action = form_action)
 
     # Lyhyempi tapa etsiä kenttiä lähetetystä datasta
     data = request.form
     form = RecipeForm(data, prefix=prefix)
 
     if not form.validate():
-        return render_template("recipes/new.html", form = form, prefix = prefix, units = units, error = "Täytä kaikki tähdellä merkityt kentät")
-
-    # return str(data)
+        return render_template("recipes/form.html", form = form, prefix = prefix, units = units, title = title, form_action = form_action, error = "Täytä kaikki tähdellä merkityt kentät")
 
     # Etsi kentät ja muunna oikeaan formaattiin (esim. kokonaisluvut int, vaikkei Python ole vahvasti tyypitetty ohjelmointikieli)
     recipe_name = data[prefix + "name"].strip()
@@ -39,11 +39,11 @@ def recipes_new():
 
     # Validoi valmistusaika
     if cooking_time_hours == 0 and cooking_time_minutes == 0:
-        return render_template("recipes/new.html", form = form, prefix = prefix, units = units, error = "Virheellinen valmistusaika")
+        return render_template("recipes/form.html", form = form, prefix = prefix, units = units, title = title, form_action = form_action, error = "Virheellinen valmistusaika")
 
     # Validoi raaka-aineiden määrä
     if recipe_ingredient_total <= 0 or not data[prefix + "ingredient-name[0]"]:
-        return render_template("recipes/new.html", form = form, prefix = prefix, units = units, error = "Raaka-aineita tulee olla vähintään yksi")
+        return render_template("recipes/form.html", form = form, prefix = prefix, units = units, title = title, form_action = form_action, error = "Raaka-aineita tulee olla vähintään yksi")
 
     # Luodaan raaka-aineita varten muutama apumuutuja (arrayt)
     recipe_ingredient_name_ids = []
@@ -101,7 +101,7 @@ def recipes_new():
                 unit_id = 0
 
             # Lisätään yksikön ID
-            recipe_ingredient_unit_ids.append(name_id)
+            recipe_ingredient_unit_ids.append(unit_id)
 
             # Käsitellään vielä määrä
             if data[prefix + "ingredient-amount[" + str(i) + "]"]:
@@ -133,7 +133,7 @@ def recipes_new():
         cooking_time_id = cooking_time.id
 
     # Lisätään uusi resepti
-    cursor = db.engine.execute("INSERT INTO resepti (nimi, valmistusaika_id, valmistusohje, kuvaus) VALUES (?, ?, ?, ?)", recipe_name, cooking_time_id, recipe_recipe, recipe_desc)
+    cursor = db.engine.execute("INSERT INTO resepti (nimi, valmistusaika_id, valmistusohje, kuvaus, kayttaja_id) VALUES (?, ?, ?, ?, ?)", recipe_name, cooking_time_id, recipe_recipe, recipe_desc, current_user.get_id())
 
     new_recipe_id = cursor.lastrowid
     cursor.close()
@@ -149,4 +149,91 @@ def recipes_new():
 @app.route("/recipes/<recipe_id>", methods=["GET"])
 def recipes_view(recipe_id):
     recipe = Resepti.query.get(recipe_id)
-    return render_template("recipes/view.html", recipe=recipe)
+
+    # Raaka-aineiden hakeminen
+    if recipe:
+        # SELECT * FROM resepti_raaka_aine WHERE resepti_id = {recipe_id},
+        # toteutettu SQLAlchemyn tarjoamalla API:lla, jotta saadaan käyttöön 
+        ingredients = ReseptiRaakaAine.query.filter_by(resepti_id=recipe_id).all()
+
+        owner = current_user.get_id() == recipe.kayttaja.id
+
+    else:
+        owner = False
+
+    return render_template("recipes/view.html", recipe=recipe, owner = owner, ingredients = ingredients)
+
+# Reseptin muokkaussivu
+@login_required
+@app.route("/recipes/<recipe_id>/edit", methods=["GET", "POST"])
+def recipes_edit(recipe_id):
+    recipe = Resepti.query.get(recipe_id)
+    prefix = "recipe-"
+    title = "Muokkaa reseptiä"
+    form_action = url_for('recipes_edit', recipe_id=recipe.id)
+    units = MaaraYksikko.query.all()
+
+    if not recipe:
+        return "Error 404: Not found"
+
+    if recipe.kayttaja_id is not current_user.get_id():
+        return render_template("auth/unauthorized.html")
+
+    if request.method == "GET":
+        # Raaka-aineiden hakeminen
+        # SELECT * FROM resepti_raaka_aine WHERE resepti_id = {recipe_id},
+        # toteutettu SQLAlchemyn tarjoamalla API:lla, jotta saadaan käyttöön 
+        ingredients = ReseptiRaakaAine.query.filter_by(resepti_id=recipe_id).all()
+
+        # Lomakkeen rakentaminen, data
+        data = {}
+        data[prefix + "name"] = recipe.nimi
+        data[prefix + "recipe"] = recipe.valmistusohje
+        data[prefix + "description"] = recipe.kuvaus
+        data["cooking-time-hours"] = recipe.valmistusaika.tunti
+        data["cooking-time-minutes"] = recipe.valmistusaika.minuutti
+
+        data[prefix + "ingredient-name"] = []
+        data[prefix + "ingredient-amount"] = []
+        data[prefix + "ingredient-unit"] = []
+        
+        i = 0
+        for ingredient in ingredients:
+            if ingredient.raaka_aine:
+                raaka_aine = ingredient.raaka_aine.nimi
+                maara = ingredient.maara
+                
+                if ingredient.maara_yksikko:
+                    yksikko = ingredient.maara_yksikko.nimi
+                else:
+                    yksikko = ""
+                
+                data[prefix + "ingredient-name"].append(raaka_aine)
+                data[prefix + "ingredient-amount"].append(maara)
+                data[prefix + "ingredient-unit"].append(yksikko)
+
+                i += 1
+
+        # Lomakkeen rakentaminen, lomake-olio
+        form = RecipeForm(prefix=prefix)
+
+        return render_template("recipes/form.html", form = form, id = recipe.id, title = title, form_action = form_action, units = units, data = data)
+    
+    return ""
+
+@login_required
+@app.route("/recipes/<recipe_id>/delete", methods=["GET"])
+def recipes_delete(recipe_id):
+    recipe = Resepti.query.get(recipe_id)
+
+    if not recipe:
+        return "Error 404: Not found"
+
+    if recipe.kayttaja_id is not current_user.get_id():
+        return render_template("auth/unauthorized.html")
+    
+    cursor = db.engine.execute("DELETE FROM resepti WHERE id = ?", recipe.id)
+    cursor = db.engine.execute("DELETE FROM resepti_raaka_aine WHERE resepti_id = ?", recipe.id)
+    cursor.close()
+    
+    return redirect(url_for("recipes_list") + "?deleted=true")
