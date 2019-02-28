@@ -2,11 +2,16 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
+import os
+
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///local.db"
-app.config["SQLALCHEMY_ECHO"] = True
+if os.environ.get("HEROKU"):
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///local.db"
+    app.config["SQLALCHEMY_ECHO"] = True
 
 db = SQLAlchemy(app)
 
@@ -35,4 +40,7 @@ login_manager.login_message = "Sinun tulee kirjautua sisään ennen tälle sivul
 def load_user(user_id):
     return Kayttaja.query.get(user_id)
 
-db.create_all()
+try: 
+    db.create_all()
+except:
+    pass
