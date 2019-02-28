@@ -86,7 +86,7 @@ def registratation():
         return render_template("auth/registrationform.html", form=form, error="Salasanat eivät täsmää")
 
     # Tarkistetaan onko sähköpostiosoite käytössä
-    cursor = db.engine.execute("SELECT COUNT(*) as maara FROM kayttaja WHERE sahkopostiosoite = ?", email)
+    cursor = db.engine.execute("SELECT COUNT(*) as maara FROM kayttaja WHERE sahkopostiosoite = ?;", email)
     
     # Haetaan tulos
     count = cursor.fetchone()
@@ -103,7 +103,7 @@ def registratation():
     pass_hash = bcrypt.generate_password_hash(pass1)
 
     # Kaikki kunnossa, tallennetaan käyttäjä tietokantaan (käyttäjänimi on toistaiseksi tyhjä, TODO: generoi käyttäjänimi / pyydä käyttäjältä)
-    cursor = db.engine.execute("INSERT INTO kayttaja (sahkopostiosoite, salasana, etunimi, sukunimi) VALUES (?, ?, ?, ?)", email, pass_hash, firstname, lastname)
+    cursor = db.engine.execute("INSERT INTO kayttaja (sahkopostiosoite, salasana, etunimi, sukunimi) VALUES (?, ?, ?, ?);", email, pass_hash, firstname, lastname)
     cursor.close()
 
     # Uudelleenohjataan käyttäjä kirjautumissivulle 
