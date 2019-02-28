@@ -9,7 +9,7 @@
 * Reseptin poisto, front-end - Valmis
 * Reseptin poisto, back-end - Valmis
 * Reseptin muokkaus, front-end - Valmis
-* Reseptin muokkaus (tallennus), back-end - Kesken
+* Reseptin muokkaus (tallennus), back-end - Valmis
 * Reseptien listaus, limiitit 25/sivu - Kesken
 * Päivitetty tietokantakaavio - Tulossa
 Lisätietoja TODO-issuessa https://github.com/Vilthsu/recipebook/issues/8 (HUOM! TODO-listan kohdille ei ole annettu deadlineja)
