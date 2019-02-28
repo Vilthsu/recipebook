@@ -12,7 +12,7 @@
 * Reseptin muokkaus (tallennus), back-end - Valmis
 * Reseptien listaus, limiitit 25/sivu - Kesken
 * Päivitetty tietokantakaavio - Tulossa
-Lisätietoja TODO-issuessa https://github.com/Vilthsu/recipebook/issues/8 (HUOM! TODO-listan kohdille ei ole annettu deadlineja)
+Lisätietoja TODO-issuessa https://github.com/Vilthsu/recipebook/issues/8 (HUOM! TODO-listan kohdille ei ole asetettu deadlineja vaan ne löytyvät tästä tiedostosta)
 
 ## Tsohan jälkeen
 Näille tavoitteille ei ole deadlineja, paitsi tietenkin se, että joskus olisi mukava, että valmistuvat. Projekti muuttuu ikuisuusprojektiksi, matalamman proriteetin projektiksi Tsohan jälkeen.  
