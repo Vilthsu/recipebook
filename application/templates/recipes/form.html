@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
+{% if form_action == url_for('recipes_new') %}
 {% set active_page = "recipes-add" %}
+{% else %}
+{% set active_page = "" %}
+{% endif %}
 {% set ns = namespace(unit_group_no=0) %}
 
 {% block body %}
@@ -141,6 +145,6 @@
         {{ form.description.label }} <span class="required-mark">*</span>
         {{ form.description(class_="form-control") }}
     </div>
-    <button type="submit" class="btn btn-primary">Lisää resepti</button>
+    <button type="submit" class="btn btn-primary">{{ button }}</button>
 </form>
 {% endblock %}

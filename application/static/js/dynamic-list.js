@@ -28,7 +28,7 @@
 
         var lastItem = items[items.length - 1];
         activateDynamicAdd(lastItem, el, template, i, () => {
-            i++;
+            // Callback
         },
         () => {
             if (typeof activateDropdownOutputs === 'function') {
@@ -59,7 +59,7 @@
                 var newItem = template.cloneNode(true);
                 element.appendChild(newItem);
                 input.removeEventListener('focus', lastItemFocusEvent);
-                activateDynamicAdd(newItem, element, template, newIndex, callback, focusCallback);
+                activateDynamicAdd(newItem, element, template, newIndex + 1, callback, focusCallback);
 
                 if (typeof focusCallback === 'function') {
                     focusCallback();
