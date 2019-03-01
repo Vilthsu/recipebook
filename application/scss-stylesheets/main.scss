@@ -6,11 +6,12 @@ $rotation-max: 360;
 }
 
 .feathericons-font-size {
-    height: 1em;
-    width: 1em;
     display: inline-block;
-    vertical-align: middle;
+    height: 1em;
     line-height: 1;
+    margin-top: -.125em;
+    vertical-align: middle;
+    width: 1em;
 }
 
 @for $i from 1 through 4 {
@@ -77,21 +78,33 @@ $rotation-max: 360;
     }
 }
 
-.latest-recipe-card {
-    margin: 0 1rem;
-    width: 20rem;
+.latest-recipe-cards {
+    height: 26rem;
 
-    &:first-child {
-        margin-left: 0;
-    }
-
-    &:last-child {
-        margin-right: 0;
-    }
-
-    & > .card-body > .card-title {
-        & > h5, & > .recipe-cooking-time-box {
-            display: inline-block;
+    .latest-recipe-card {
+        margin: 0 1rem;
+        width: 20rem;
+        vertical-align: top;
+        height: 25rem;
+    
+        &:first-child {
+            margin-left: 0;
+        }
+    
+        &:last-child {
+            margin-right: 0;
+        }
+    
+        & > .card-body {
+            & > .card-text {
+                height: 4rem;
+            }
+    
+            & > .card-title {
+                & > h5, & > .recipe-cooking-time-box {
+                    display: inline-block;
+                }
+            }
         }
     }
 }

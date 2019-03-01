@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% set active_page = "profile" %}
+
+{% block body %}
+<h1>Omat tiedot</h1>
+<div class="row">
+    <div class="col-3">Käyttäjätunnus:<br /><small>(valinnainen)</small></div>
+    <div class="col-4">
+        {% if user.kayttajatunnus %}
+        {{ user.kayttajatunnus }}
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">Sähköpostiosoite:</div>
+    <div class="col-4">{{ user.sahkopostiosoite }}</div>
+</div>
+<div class="row">
+    <div class="col-3">Nimi:</div>
+    <div class="col-4">{{ user.etunimi }} {{ user.sukunimi }}</div>
+</div>
+<div class="row">
+    <div class="col-3">Etunimi:</div>
+    <div class="col-4">{{ user.etunimi }}</div>
+</div>
+<div class="row">
+    <div class="col-3">Sukunimi:</div>
+    <div class="col-4">{{ user.sukunimi }}</div>
+</div>
+{% endblock %}

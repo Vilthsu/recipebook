@@ -39,3 +39,7 @@
 .list-no-style > li {
   padding: .6em 1em;
 }
+
+.larger-cooking-time {
+  font-size: .9em;
+}

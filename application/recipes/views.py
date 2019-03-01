@@ -219,7 +219,7 @@ def recipes_edit_post(data, prefix, recipe_id, title, form_action, units, defaul
     cursor.close()
 
     # Päivitetään reseptin tiedot
-    cursor = db.engine.execute("UPDATE resepti SET nimi = ?, kuvaus = ?, valmistusohje = ? WHERE id = ?", recipe_name, recipe_desc, recipe_recipe, recipe_id)
+    cursor = db.engine.execute("UPDATE resepti SET nimi = ?, kuvaus = ?, valmistusohje = ?, valmistusaika_id = ? WHERE id = ?", recipe_name, recipe_desc, recipe_recipe, cooking_time_id, recipe_id)
     cursor.close()
 
     # Lisää raaka-aineiden liitostaulun data

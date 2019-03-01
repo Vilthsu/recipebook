@@ -3,11 +3,12 @@
 }
 
 .feathericons-font-size {
-  height: 1em;
-  width: 1em;
   display: inline-block;
-  vertical-align: middle;
+  height: 1em;
   line-height: 1;
+  margin-top: -.125em;
+  vertical-align: middle;
+  width: 1em;
 }
 
 .feathericons-w-1 {
@@ -264,19 +265,29 @@
   display: inline-block;
 }
 
-.latest-recipe-card {
-  margin: 0 1rem;
-  width: 20rem;
+.latest-recipe-cards {
+  height: 26rem;
 }
 
-.latest-recipe-card:first-child {
+.latest-recipe-cards .latest-recipe-card {
+  margin: 0 1rem;
+  width: 20rem;
+  vertical-align: top;
+  height: 25rem;
+}
+
+.latest-recipe-cards .latest-recipe-card:first-child {
   margin-left: 0;
 }
 
-.latest-recipe-card:last-child {
+.latest-recipe-cards .latest-recipe-card:last-child {
   margin-right: 0;
 }
 
-.latest-recipe-card > .card-body > .card-title > h5, .latest-recipe-card > .card-body > .card-title > .recipe-cooking-time-box {
+.latest-recipe-cards .latest-recipe-card > .card-body > .card-text {
+  height: 4rem;
+}
+
+.latest-recipe-cards .latest-recipe-card > .card-body > .card-title > h5, .latest-recipe-cards .latest-recipe-card > .card-body > .card-title > .recipe-cooking-time-box {
   display: inline-block;
 }
