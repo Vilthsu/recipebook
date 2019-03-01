@@ -103,6 +103,7 @@ def recipes_view(recipe_id):
 
     else:
         owner = False
+        ingredients = []
 
     return render_template("recipes/view.html", recipe=recipe, owner = owner, ingredients = ingredients)
 
