@@ -1,7 +1,8 @@
 from application import app, db
-from flask import render_template
+from flask import render_template, redirect, url_for
 from application.recipes.models import Resepti
 from datetime import date, timedelta
+from flask_login import login_required, current_user
 
 # Index-sivu
 @app.route("/")
@@ -17,3 +18,15 @@ def index():
     cursor.close()
     
     return render_template("index.html", recipes=recipes, quick_recipes=quick_recipes)
+
+@login_required
+@app.route("/my-profile")
+def my_profile():
+    cursor = db.engine.execute("SELECT kayttajatunnus, etunimi, sukunimi, sahkopostiosoite, rekisteroitynyt, muokattu FROM kayttaja WHERE id = ? LIMIT 1", current_user.get_id())
+    user = cursor.fetchone()
+    cursor.close()
+
+    if not user:
+        return redirect(url_for("index") + "?error=Error while loading my profile")
+
+    return render_template("profile.html", user=user)

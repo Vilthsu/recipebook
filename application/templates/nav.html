@@ -23,10 +23,10 @@
     <!-- User menu / login btn -->
     {% if current_user.is_authenticated %}
     <div class="dropdown">
-        <a href="#" class="nav-link nav-link-light dropdown-toggle" id="navUserMenu" data-toggle="dropdown"
+        <a href="#" class="nav-link nav-link-light dropdown-toggle{{ ' active' if active_page == 'profile' else '' }}" id="navUserMenu" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">{{ current_user.get_fullname() }}</a>
         <div class="dropdown-menu" aria-labelledby="navUserMenu">
-            <button class="dropdown-item" type="button">Omat tiedot</button>
+            <a href="{{ url_for('my_profile') }}" class="dropdown-item">Omat tiedot</a>
             <a href="{{ url_for('logout') }}" class="dropdown-item">Kirjaudu ulos</a>
         </div>
     </div>
