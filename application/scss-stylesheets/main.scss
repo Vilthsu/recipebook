@@ -6,11 +6,12 @@ $rotation-max: 360;
 }
 
 .feathericons-font-size {
-    height: 1em;
-    width: 1em;
     display: inline-block;
-    vertical-align: middle;
+    height: 1em;
     line-height: 1;
+    margin-top: -.125em;
+    vertical-align: middle;
+    width: 1em;
 }
 
 @for $i from 1 through 4 {

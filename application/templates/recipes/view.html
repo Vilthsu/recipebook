@@ -6,9 +6,22 @@
 <p>Valitettavasti etsimääsi reseptiä ei löytynyt. <a href="{{ url_for('recipe_list') }}">Selaa kaikkia reseptejä</a></p>
 {% else %}
 <h1>{{ recipe.nimi }}</h1>
-{% if owner == True %}
-<a href="{{ url_for('recipes_edit', recipe_id=recipe.id) }}" class="btn btn-primary btn-sm">Muokkaa reseptiä</a> <a href="{{ url_for('recipes_delete', recipe_id=recipe.id) }}" class="btn btn-danger btn-sm">Poista resepti</a>
-{% endif %}
+<div class="row">
+    <div class="col-12">
+        <span class="badge badge-pill badge-secondary larger-cooking-time">
+            <i data-feather="clock" class="feathericons-font-size feathericons-w-4"></i>
+            {% if recipe.valmistusaika.tunti > 0 %}
+            {{ recipe.valmistusaika.tunti }} h 
+            {% endif %}
+            {% if recipe.valmistusaika.minuutti > 0 %}
+            {{ recipe.valmistusaika.minuutti }} min
+            {% endif %}
+        </span>
+        {% if owner == True %}
+         <a href="{{ url_for('recipes_edit', recipe_id=recipe.id) }}" class="btn btn-primary btn-sm">Muokkaa reseptiä</a> <a href="{{ url_for('recipes_delete', recipe_id=recipe.id) }}" class="btn btn-danger btn-sm">Poista resepti</a>
+        {% endif %}
+    </div>
+</div>
 <div id="recipe-view-description">
     {{ recipe.kuvaus }}
 </div>
