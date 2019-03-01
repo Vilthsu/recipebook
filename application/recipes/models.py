@@ -20,10 +20,10 @@ class MaaraYksikko(db.Model):
 
 class Resepti(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nimi = db.Column(db.String(255), nullable=False)
+    nimi = db.Column(db.String(150), nullable=False)
     valmistusaika_id = db.Column(db.Integer, db.ForeignKey('valmistusaika.id'))
-    valmistusohje = db.Column(db.String(), nullable=False)
-    kuvaus = db.Column(db.String(255), nullable=False)
+    valmistusohje = db.Column(db.String(5000), nullable=False)
+    kuvaus = db.Column(db.String(500), nullable=False)
     luotu = db.Column(db.DateTime, default=db.func.current_timestamp())
     kayttaja_id = db.Column(db.Integer, db.ForeignKey('kayttaja.id'))
 

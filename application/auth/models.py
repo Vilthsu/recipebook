@@ -5,9 +5,9 @@ class Kayttaja(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     kayttajatunnus = db.Column(db.String(50), nullable=True)
     salasana = db.Column(db.String(50), nullable=False)
-    etunimi = db.Column(db.String(50), nullable=False)
-    sukunimi = db.Column(db.String(50), nullable=False)
-    sahkopostiosoite = db.Column(db.String(100), nullable=False)
+    etunimi = db.Column(db.String(20), nullable=False)
+    sukunimi = db.Column(db.String(20), nullable=False)
+    sahkopostiosoite = db.Column(db.String(50), nullable=False)
     rekisteroitynyt = db.Column(db.DateTime, default=db.func.current_timestamp())
     muokattu = db.Column(db.DateTime, default=db.func.current_timestamp(),
                               onupdate=db.func.current_timestamp())

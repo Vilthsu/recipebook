@@ -76,6 +76,11 @@ def registratation():
     pass1 = data[prefix + "password"].strip()
     pass2 = data[prefix + "password2"].strip()
 
+    # Validoi pituudet
+    too_long_value = validateMaxLengths(data, prefix)
+    if len(too_long_value) > 0:
+        return render_template("auth/registrationform.html", form = form, error = too_long_value)
+
     # Salasanan tulee olla vähintään 8 merkkiä pitkä
     # TODO: vahvista väh. 1 iso & 1 pienikirjain + 1 numero
     if len(pass1) < 8:
@@ -113,3 +118,19 @@ def registratation():
 def logout():
     logout_user()
     return redirect(url_for("index") + "?logout=ok")
+
+def validateMaxLengths(data, prefix):
+    email = data[prefix + "email"].strip()
+    firstname = data[prefix + "firstname"].strip()
+    lastname = data[prefix + "lastname"].strip()
+
+    if len(email) > 50:
+        return "Sähköpostiosoite saa olla korkeintaan 50 merkkiä pitkä."
+
+    if len(firstname) > 20:
+        return "Etunimi saa olla korkeintaan 20 merkkiä pitkä."
+
+    if len(lastname) > 20:
+        return "Sukunimi saa olla korkeintaan 20 merkkiä pitkä."
+    
+    return ""
