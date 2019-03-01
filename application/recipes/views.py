@@ -62,6 +62,11 @@ def recipes_new():
     # Validoi raaka-aineiden määrä
     if not validateIngredients(data, recipe_ingredient_total, ingredient_prefix + "name[0]"):
         return render_template("recipes/form.html", form = form, prefix = prefix, units = units, title = title, form_action = form_action, default_data = saved_data, button=button, error = "Raaka-aineita tulee olla vähintään yksi")
+    
+    # Validoi kenttien pituudet
+    too_long_value = validateMaxLengths(data, recipe_ingredient_total, ingredient_prefix, prefix)
+    if len(too_long_value) > 0:
+        return render_template("recipes/form.html", form = form, prefix = prefix, units = units, title = title, form_action = form_action, default_data = default_data, button=button, error = too_long_value)
 
     # Käsitellään raaka-aineet ...
     recipe_ingredients = add_recipe_ingredients(data, recipe_ingredient_total, ingredient_prefix + 'name', ingredient_prefix + 'amount', ingredient_prefix + 'unit')
@@ -203,6 +208,11 @@ def recipes_edit_post(data, prefix, recipe_id, title, form_action, units, defaul
     # Validoi raaka-aineiden määrä
     if not validateIngredients(data, recipe_ingredient_total, ingredient_prefix + "name[0]"):
         return render_template("recipes/form.html", form = form, prefix = prefix, units = units, title = title, form_action = form_action, default_data = default_data, button=button, error = "Raaka-aineita tulee olla vähintään yksi")
+
+    # Validoi kenttien pituudet
+    too_long_value = validateMaxLengths(data, recipe_ingredient_total, ingredient_prefix, prefix)
+    if len(too_long_value) > 0:
+        return render_template("recipes/form.html", form = form, prefix = prefix, units = units, title = title, form_action = form_action, default_data = default_data, button=button, error = too_long_value)
 
     # Käsitellään raaka-aineet ...
     recipe_ingredients = add_recipe_ingredients(data, recipe_ingredient_total, ingredient_prefix + 'name', ingredient_prefix + 'amount', ingredient_prefix + 'unit')
@@ -395,3 +405,26 @@ def validateIngredients(data, total, index):
         return False
 
     return True
+
+def validateMaxLengths(data, total, integredient_prefix, prefix):
+    recipe_name = data[prefix + "name"].strip()
+    recipe_recipe = data[prefix + "recipe"].strip()
+    recipe_desc = data[prefix + "description"].strip()
+
+    if len(recipe_name) > 150:
+        return "Reseptin nimi saa olla korkeintaan 150 merkkiä pitkä."
+
+    if len(recipe_recipe) > 5000:
+        return "Reseptin valmistusohje saa olla korkeintaan 5000 merkkiä pitkä."
+
+    if len(recipe_desc) > 500:
+        return "Reseptin kuvaus saa olla korkeintaan 500 merkkiä pitkä."
+
+    for i in range(0, total):
+        index = integredient_prefix + "[" + i + "]"
+
+        if index in data:
+            if len(data[index]) > 100:
+                return "Raaka-aineen nimi saa olla korkeintaan 100 merkkiä pitkä."
+
+    return ""
