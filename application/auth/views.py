@@ -23,8 +23,7 @@ def login():
     passwd = data[prefix + "password"].strip()
 
     # Haetaan sähköpostiin liittyvän käyttäjän tiedot. Tarvitsemme aluksi salasanan hashin.
-    stmt = text("SELECT salasana FROM kayttaja WHERE sahkopostiosoite = :email LIMIT 1").params(email=email)
-    cursor = db.engine.execute(stmt)
+    cursor = db.engine.execute("SELECT salasana FROM kayttaja WHERE sahkopostiosoite = ? LIMIT 1", email)
     
     # Haetaan tulos
     result = cursor.fetchone()
@@ -42,7 +41,7 @@ def login():
         return render_template("auth/loginform.html", form=form, error="Käyttäjää ei löytynyt")
 
     # Käyttäjä sisäänkirjaus
-    user = Kayttaja.query.filter_by(sahkopostiosoite=email, salasana=passwd_hash).first()
+    user = Kayttaja.query.filter_by(sahkopostiosoite=email).first()
 
     # Kenties turha tarkistus...
     if not user:
