@@ -23,7 +23,8 @@ def login():
     passwd = data[prefix + "password"].strip()
 
     # Haetaan sähköpostiin liittyvän käyttäjän tiedot. Tarvitsemme aluksi salasanan hashin.
-    cursor = db.engine.execute("SELECT salasana FROM kayttaja WHERE sahkopostiosoite = ? LIMIT 1", email)
+    stmt = text("SELECT salasana FROM kayttaja WHERE sahkopostiosoite = :email LIMIT 1").params(email=email)
+    cursor = db.engine.execute(stmt)
     
     # Haetaan tulos
     result = cursor.fetchone()
