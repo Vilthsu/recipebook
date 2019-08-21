@@ -22,6 +22,6 @@ pylint-flask==0.6
 pylint-plugin-utils==0.4
 six==1.12.0
 SQLAlchemy==1.2.16
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 wrapt==1.11.1
 WTForms==2.2.1
